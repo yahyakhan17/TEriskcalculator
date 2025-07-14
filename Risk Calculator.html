@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thromboembolism Risk Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    label { display: block; margin-top: 10px; }
+    input, button { padding: 8px; margin-top: 5px; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Thromboembolism Risk Calculator</h2>
+
+  <label for="score">CHA<sub>2</sub>DS<sub>2</sub>-VASc Score (0-9):</label>
+  <input type="number" id="score" min="0" max="9">
+
+  <label for="days">Days Since Procedure:</label>
+  <input type="number" id="days" min="0">
+
+  <button onclick="calculateRisk()">Calculate Risk</button>
+
+  <div id="result"></div>
+
+  <script>
+    // Updated risk coefficients for scores 0 to 9
+    const coefficients = [
+      0.000410958904109589,
+      0.00232876712328767,
+      0.00712328767123288,
+      0.0136986301369863,
+      0.0138356164383562,
+      0.0213698630136986,
+      0.0279452054794521,
+      0.039041095890411,
+      0.043972602739726,
+      0.164794520547945
+    ];
+
+    function calculateRisk() {
+      const score = parseInt(document.getElementById('score').value);
+      const days = parseFloat(document.getElementById('days').value);
+      const resultDiv = document.getElementById('result');
+
+      if (isNaN(score) || isNaN(days) || score < 0 || score > 9 || days < 0) {
+        resultDiv.textContent = 'Please enter valid inputs.';
+        return;
+      }
+
+      const coefficient = coefficients[score];
+      const risk = (coefficient * days).toFixed(3);
+
+      resultDiv.textContent = `Estimated thromboembolic risk: ${risk}%`;
+    }
+  </script>
+</body>
+</html>
